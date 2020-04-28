@@ -12,11 +12,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import java.awt.event.ItemListener;
 
 public class timer {
 
@@ -26,7 +29,8 @@ public class timer {
     static SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
     static Timer timer;
     static long startTime = -1;
-    static long duration = 5000;
+    static long duration = 10000;
+
     static JTextField cronos = new JTextField();
     static JTextField cronosCount = new JTextField();
     static Color c;
@@ -46,8 +50,6 @@ public class timer {
 
                 JFrame mySecondFrame = new JFrame();
                 mySecondFrame.setSize(200, 200);
-                mySecondFrame.getContentPane().setBackground(Color.WHITE);
-                
 
                 inchidere.addActionListener(new ActionListener() {
 
@@ -70,7 +72,7 @@ public class timer {
                             @Override
                             public void actionPerformed(ActionEvent event) {
 
-                                timer = new Timer(10, new ActionListener() {
+                                timer = new Timer(1000, new ActionListener() {
                                     @Override
                                     public void actionPerformed(ActionEvent e) {
                                         if (startTime < 0) {
@@ -97,7 +99,7 @@ public class timer {
                             @Override
                             public void actionPerformed(ActionEvent event) {
 
-                                timer = new Timer(10, new ActionListener() {
+                                timer = new Timer(1000, new ActionListener() {
                                     @Override
                                     public void actionPerformed(ActionEvent e) {
                                         if (startTime < 0) {
@@ -105,22 +107,23 @@ public class timer {
                                         }
                                         long now = System.currentTimeMillis();
                                         long clockTime = now - startTime;
-                                        if (clockTime >= duration) {
-                                            clockTime = duration;
+                                        if (clockTime <= duration) {
+                                            duration = 10000;
+
                                             timer.stop();
+
                                             mySecondFrame.setVisible(true);
-                                            mySecondFrame.setBackground(k);
 
                                         }
                                         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
-                                        cronosCount.setText(df.format(duration - clockTime));
-
+                                        cronos.setText(df.format(clockTime + duration));
                                     }
                                 });
 
                             }
                         });
 
+                        cronos.setText(df.format(elapsed++));
                         cronosCount.setText(df.format(elapsed));
                         myChoices.add(onTime);
                         myChoices.add(countdown);
@@ -141,6 +144,7 @@ public class timer {
                         speed.addItem("3");
                         speed.addItem("4");
                         speed.addItem("5");
+
                         speed.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent event) {
@@ -148,21 +152,47 @@ public class timer {
                                 int selection = speed.getSelectedIndex();
                                 switch (selection) {
                                     case 1:
-                                        mySecondFrame.setBackground(c);
+                                        mySecondFrame.getContentPane().setBackground(Color.WHITE);
+
+                                        mySecondFrame.getContentPane().setBackground(Color.MAGENTA);
+
                                         break;
+
                                     case 2:
-                                        mySecondFrame.setBackground(c);
+                                        mySecondFrame.getContentPane().setBackground(Color.WHITE);
+                                     
+
+                                        mySecondFrame.getContentPane().setBackground(Color.MAGENTA);
                                         break;
+
                                     case 3:
+                                        mySecondFrame.getContentPane().setBackground(Color.WHITE);
+
+                                        mySecondFrame.getContentPane().setBackground(Color.MAGENTA);
+                                        break;
+
                                     case 4:
+                                        mySecondFrame.getContentPane().setBackground(Color.WHITE);
+
+                                        mySecondFrame.getContentPane().setBackground(Color.MAGENTA);
+                                        break;
+
                                     case 5:
+                                        mySecondFrame.getContentPane().setBackground(Color.WHITE);
+
+                                        mySecondFrame.getContentPane().setBackground(Color.MAGENTA);
+                                        break;
+
                                     default:
                                         break;
                                 }
                             }
-                        });
+                            
+                                
+                           });
+                        
 
-                        //c.equals(e);
+                       
                         JButton starter = new JButton("START");
                         JButton stoper = new JButton("STOP");
 

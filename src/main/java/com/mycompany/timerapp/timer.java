@@ -29,6 +29,8 @@ public class timer {
     static long duration = 5000;
     static JTextField cronos = new JTextField();
     static JTextField cronosCount = new JTextField();
+    static Color c;
+    static Color k = new Color(255, 255, 255);
 
     public static void main(String[] args) {
 
@@ -42,6 +44,11 @@ public class timer {
                 MenuItem setari = new MenuItem("Settings");
                 MenuItem inchidere = new MenuItem("Close");
 
+                JFrame mySecondFrame = new JFrame();
+                mySecondFrame.setSize(200, 200);
+                mySecondFrame.getContentPane().setBackground(Color.WHITE);
+                
+
                 inchidere.addActionListener(new ActionListener() {
 
                     @Override
@@ -49,33 +56,72 @@ public class timer {
                         System.exit(0);
                     }
                 });
+
+                elapsed = 0;
+                ButtonGroup myChoices = new ButtonGroup();
+                JRadioButton onTime = new JRadioButton("on time");
+                JRadioButton countdown = new JRadioButton("coutdown");
                 setari.addActionListener(new ActionListener() {
                     @Override
+
                     public void actionPerformed(ActionEvent e) {
-                        timer = new Timer(10, new ActionListener() {
+
+                        countdown.addActionListener(new ActionListener() {
                             @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (startTime < 0) {
-                                    startTime = System.currentTimeMillis();
-                                }
-                                long now = System.currentTimeMillis();
-                                long clockTime = now - startTime;
-                                if (clockTime >= duration) {
-                                    clockTime = duration;
-                                    timer.stop();
-                                }
-                                SimpleDateFormat df = new SimpleDateFormat("mm:ss:SSS");
-                                cronos.setText(df.format(duration - clockTime));
+                            public void actionPerformed(ActionEvent event) {
+
+                                timer = new Timer(10, new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        if (startTime < 0) {
+                                            startTime = System.currentTimeMillis();
+                                        }
+                                        long now = System.currentTimeMillis();
+                                        long clockTime = now - startTime;
+                                        if (clockTime >= duration) {
+                                            clockTime = duration;
+                                            timer.stop();
+
+                                            mySecondFrame.setVisible(true);
+
+                                        }
+                                        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+                                        cronosCount.setText(df.format(duration - clockTime));
+
+                                    }
+                                });
+
+                            }
+                        });
+                        onTime.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent event) {
+
+                                timer = new Timer(10, new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        if (startTime < 0) {
+                                            startTime = System.currentTimeMillis();
+                                        }
+                                        long now = System.currentTimeMillis();
+                                        long clockTime = now - startTime;
+                                        if (clockTime >= duration) {
+                                            clockTime = duration;
+                                            timer.stop();
+                                            mySecondFrame.setVisible(true);
+                                            mySecondFrame.setBackground(k);
+
+                                        }
+                                        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+                                        cronosCount.setText(df.format(duration - clockTime));
+
+                                    }
+                                });
+
                             }
                         });
 
-                        elapsed = 0;
-                        ButtonGroup myChoices = new ButtonGroup();
-                        JRadioButton onTime = new JRadioButton("on time");
-
-                        cronos.setText(df.format(elapsed));
-                        JRadioButton countdown = new JRadioButton("coutdown(min)");
-                        JTextField cronosCount = new JTextField();
+                        cronosCount.setText(df.format(elapsed));
                         myChoices.add(onTime);
                         myChoices.add(countdown);
                         ImageIcon ii = new ImageIcon("C:\\Users\\Ruxi\\Desktop\\colors.jpg");
@@ -90,12 +136,33 @@ public class timer {
                         JTextField tf2 = new JTextField("choose speed:");
                         tf2.setEditable(false);
                         JComboBox speed = new JComboBox();
-
                         speed.addItem("1");
                         speed.addItem("2");
                         speed.addItem("3");
                         speed.addItem("4");
                         speed.addItem("5");
+                        speed.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent event) {
+
+                                int selection = speed.getSelectedIndex();
+                                switch (selection) {
+                                    case 1:
+                                        mySecondFrame.setBackground(c);
+                                        break;
+                                    case 2:
+                                        mySecondFrame.setBackground(c);
+                                        break;
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                    default:
+                                        break;
+                                }
+                            }
+                        });
+
+                        //c.equals(e);
                         JButton starter = new JButton("START");
                         JButton stoper = new JButton("STOP");
 
@@ -149,7 +216,7 @@ public class timer {
                                 jcc = new JColorChooser();
                                 JDialog dialog;
                                 dialog = JColorChooser.createDialog(null, "Choose color", true, jcc, (ActionEvent e1) -> {
-                                    Color c = jcc.getColor();
+                                    c = jcc.getColor();
                                     myFrame.getContentPane();
                                     String hex = Integer.toHexString(c.getRGB() & 0xffffff);
                                     hex = "#" + hex;
